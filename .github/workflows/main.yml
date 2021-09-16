@@ -20,6 +20,7 @@ jobs:
       #Create _redirects
       - name: _redirects files
         run: echo "/*    /index.html   200" > public/_redirects
+        
       # Deploy the site with netlify-cli
       - name: Deploy Site
         env:
