@@ -21,6 +21,7 @@ jobs:
       - run: ls
       - run: touch public/_redirects
       - run: echo "/*    /index.html   200" > public/_redirects
+      - run: ls public
 
       # Deploy the site with netlify-cli
       - name: Deploy Site
