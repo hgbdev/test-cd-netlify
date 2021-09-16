@@ -1,7 +1,9 @@
 name: Deploy to Netlify on commits to dev
 on:
   push:
-    branches: [dev]
+    branches: [develop]
+  pull_request:
+    branches: [develop]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,6 +17,9 @@ jobs:
       - name: Build site
         run: npm run build
 
+      #Create _redirects
+      - name: _redirects files
+        run: echo "/*    /index.html   200" > public/_redirects
       # Deploy the site with netlify-cli
       - name: Deploy Site
         env:
