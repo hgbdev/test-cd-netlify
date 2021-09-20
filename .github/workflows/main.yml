@@ -1,19 +1,30 @@
-name: Deploy to Netlify on commits to dev
+name: Deploy to Netlify
 on:
-  push:
-    branches: [dev]
   pull_request:
-    branches: [dev]
+    branches:
+      - dev
+    types: [closed]
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       # Checkout repo
       - uses: actions/checkout@v2
 
-      - run: nest --help
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+
       #Create _redirects
-      - run: ls
       - run: touch public/_redirects
       - run: echo "/*    /index.html   200" > public/_redirects
-      - run: ls public
+
+      # Deploy the site with netlify-cli
+      - name: Deploy Site
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: netlify deploy --prod
