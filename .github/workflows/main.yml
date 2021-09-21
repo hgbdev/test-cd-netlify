@@ -6,16 +6,17 @@ on:
     types: [closed]
 jobs:
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       # Checkout repo
       - uses: actions/checkout@v2
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
       - name: Build site
-        run: npm run build
+        run: yarn build
 
       #Create _redirects
       - run: touch public/_redirects
